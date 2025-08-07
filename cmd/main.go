@@ -1,6 +1,7 @@
 package main
 
 import (
+	"MyApp/internal/storage"
 	"log/slog"
 	"os"
 )
@@ -14,6 +15,10 @@ func main() {
 	log := setupLogger(os.Getenv("ENV"))
 
 	log.Info("Started application")
+
+	db := storage.NewStorage(os.Getenv("DATABASE_URL"))
+
+	defer db.Close()
 
 }
 
