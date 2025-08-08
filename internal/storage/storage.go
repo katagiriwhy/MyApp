@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -18,6 +19,16 @@ func NewStorage(connection string) *Storage {
 	}
 
 	if err := pool.Ping(context.Background()); err != nil {
+		panic(err)
+	}
+
+	sqlFile, err := os.ReadFile(os.Getenv("SQL_FILE_PATH"))
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = pool.Exec(context.Background(), string(sqlFile))
+	if err != nil {
 		panic(err)
 	}
 

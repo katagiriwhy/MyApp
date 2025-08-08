@@ -3,9 +3,11 @@ version: '3.9'
 services:
   go-app:
     container_name: my-app
+    working_dir: /internal
     build: .
     environment:
       DATABASE_URL: "postgres://postgres:postgres@go_db:5432/postgres?sslmode=disable"
+      SQL_FILE_PATH: "/storage/migrations/001_create_users_table.sql"
       JWT_SECRET: "intel"
       APP_PASSWORD: "owpkzmwnoxmhhikg"
       TIMEOUT: 4s
