@@ -3,13 +3,15 @@ LABEL authors="katagiri"
 
 WORKDIR /MyApp
 
-COPY . .
+COPY go.mod go.sum ./
 
 RUN go mod download
 
+COPY . .
+
 RUN go mod tidy
 
-RUN go build -o api ./cmd/service/main.go
+RUN go build -o api ./cmd/main.go
 
 EXPOSE 8080
 

@@ -18,6 +18,11 @@ func main() {
 
 	db := storage.NewStorage(os.Getenv("DATABASE_URL"))
 
+	i := 0
+
+	for i < 10000 {
+		i++
+	}
 	defer db.Close()
 
 }
