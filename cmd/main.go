@@ -1,7 +1,9 @@
 package main
 
 import (
+	"MyApp/internal/controllers"
 	"MyApp/internal/storage"
+	"MyApp/routes"
 	"log/slog"
 	"os"
 )
@@ -18,11 +20,12 @@ func main() {
 
 	db := storage.NewStorage(os.Getenv("DATABASE_URL"))
 
-	i := 0
+	userController := controllers.NewUserController(db)
 
-	for i < 10000 {
-		i++
-	}
+	router := routes.NewRoutes(userController)
+
+	router.Run(os.Getenv("PORT"))
+
 	defer db.Close()
 
 }
