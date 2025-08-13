@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"MyApp/backend/internal/domain/models"
-	"MyApp/backend/internal/lib/jwt"
-	"MyApp/backend/internal/storage"
+	"backend/internal/domain/models"
+	"backend/internal/lib/jwt"
+	"backend/internal/storage"
 	"net/http"
 	"time"
 
@@ -99,7 +99,7 @@ func (con *UserController) Login(c *gin.Context) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword(user.PassHash, []byte(body.Password))
+	err = bcrypt.CompareHashAndPassword(user, []byte(body.Password))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Password is incorrect: " + err.Error()})
