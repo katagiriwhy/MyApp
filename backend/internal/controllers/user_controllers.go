@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"MyApp/internal/domain/models"
-	"MyApp/internal/lib/jwt"
-	"MyApp/internal/storage"
+	"MyApp/backend/internal/domain/models"
+	"MyApp/backend/internal/lib/jwt"
+	"MyApp/backend/internal/storage"
 	"net/http"
 	"time"
 

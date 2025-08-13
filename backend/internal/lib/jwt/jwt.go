@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"MyApp/internal/domain/models"
+	"MyApp/backend/internal/domain/models"
 	"os"
 	"time"
 

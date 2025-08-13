@@ -1,9 +1,9 @@
 package main
 
 import (
-	"MyApp/internal/controllers"
-	"MyApp/internal/storage"
-	"MyApp/routes"
+	"MyApp/backend/internal/controllers"
+	"MyApp/backend/internal/storage"
+	"MyApp/backend/routes"
 	"log/slog"
 	"os"
 )

@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"MyApp/internal/domain/models"
+	"MyApp/backend/internal/domain/models"
 	"context"
 	"errors"
 	"fmt"
@@ -16,6 +16,7 @@ type UserRepository interface {
 	GetByEmail(ctx context.Context, email string) (*models.User, error)
 	Create(ctx context.Context, user *models.User) error
 	DeleteUserByEmail(ctx context.Context, email string) error
+	UpdatePassword(ctx context.Context, id int64, newPassword string) error
 }
 
 type Storage struct {
@@ -66,6 +67,18 @@ func (s *Storage) Create(ctx context.Context, user *models.User) error {
 	return nil
 }
 
+func (s *Storage) UpdatePassword(ctx context.Context, id int64, newPassword string) error {
+	const query = "UPDATE users SET password = $1 WHERE id = $2"
+
+	_, err := s.db.Exec(ctx, query, newPassword, id)
+
+	if err != nil {
+		return fmt.Errorf("error while updating password: %w", err)
+	}
+
+	return nil
+}
+
 func (s *Storage) DeleteUserByEmail(ctx context.Context, email string) error {
 	const query = "DELETE FROM users WHERE email = $1"
 
@@ -104,4 +117,12 @@ func NewStorage(connection string) *Storage {
 
 func (s *Storage) Close() {
 	s.db.Close()
+}
+
+type LessonRepository interface {
+	CreateLesson(ctx context.Context, lesson *models.Lesson) error
+}
+
+func (s *Storage) CreateLesson(ctx context.Context, lesson *models.Lesson) error {
+	const query = "INSERT INTO lessons () VALUES ()"
 }
