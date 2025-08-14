@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"MyApp/backend/internal/domain/models"
+	"backend/internal/domain/models"
 	"context"
 	"errors"
 	"fmt"

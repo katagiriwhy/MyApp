@@ -99,7 +99,7 @@ func (con *UserController) Login(c *gin.Context) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword(user, []byte(body.Password))
+	err = bcrypt.CompareHashAndPassword(user.PassHash, []byte(body.Password))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Password is incorrect: " + err.Error()})
