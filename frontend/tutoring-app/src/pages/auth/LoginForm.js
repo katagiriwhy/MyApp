@@ -11,8 +11,9 @@ const LoginForm = () => {
         e.preventDefault();
         try {
             const response = await login(email, password);
-            localStorage.setItem('token', response.token); // Сохраняем токен
-            window.location.href = '/profile'; // Перенаправляем
+            alert("Вход успешен!")
+            localStorage.setItem('token', response.token);
+            window.location.href = '/profile';
         } catch (err) {
             setError('Неверный email или пароль');
         }
