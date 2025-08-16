@@ -1,17 +1,23 @@
-FROM golang:1.24.2
+FROM golang:alpine AS builder
 LABEL authors="katagiri"
+
+ENV GOOS linux
+
+ENV CGO_ENABLED 0
+
+RUN apk update --no-cache && apk add --no-cache tzdata
 
 WORKDIR /MyApp
 
-COPY backend/go.mod go.sum ./
+ADD go.mod .
+
+ADD go.sum .
 
 RUN go mod download
 
 COPY . .
 
-RUN go mod tidy
-
-RUN go build -o api ./cmd/main.go
+RUN go build -ldflags="-s -w" -o api ./backend/cmd/main.go
 
 EXPOSE 8080
 

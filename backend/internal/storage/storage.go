@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"backend/internal/domain/models"
+	"MyApp/backend/internal/domain/models"
 	"context"
 	"errors"
 	"fmt"
@@ -56,9 +56,9 @@ func (s *Storage) GetByID(ctx context.Context, id int) (*models.User, error) {
 }
 
 func (s *Storage) Create(ctx context.Context, user *models.User) error {
-	const query = "INSERT INTO users (id, email, password) VALUES ($1, $2, $3)"
+	const query = "INSERT INTO users (first_name, last_name, email, password, date_of_birth) VALUES ($1, $2, $3, $4, $5)"
 
-	_, err := s.db.Exec(ctx, query, user.ID, user.Email, user.PassHash)
+	_, err := s.db.Exec(ctx, query, user.FirstName, user.LastName, user.Email, user.PassHash, user.BirthDate)
 
 	if err != nil {
 		return err
@@ -125,4 +125,5 @@ type LessonRepository interface {
 
 func (s *Storage) CreateLesson(ctx context.Context, lesson *models.Lesson) error {
 	const query = "INSERT INTO lessons () VALUES ()"
+	return nil
 }

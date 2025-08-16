@@ -5,7 +5,7 @@ services:
     environment:
       PORT: ":8080"
       DATABASE_URL: "postgres://postgres:postgres@go_db:5432/postgres?sslmode=disable"
-      SQL_FILE_PATH: "./internal/storage/migrations/001_create_users_table.sql"
+      SQL_FILE_PATH: "./backend/internal/storage/migrations/001_create_users_table.sql"
       JWT_SECRET: "intel"
       APP_PASSWORD: "owpkzmwnoxmhhikg"
       TIMEOUT: 4s

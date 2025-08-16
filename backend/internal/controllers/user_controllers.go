@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"backend/internal/domain/models"
-	"backend/internal/lib/jwt"
-	"backend/internal/storage"
+	"MyApp/backend/internal/domain/models"
+	"MyApp/backend/internal/lib/jwt"
+	"MyApp/backend/internal/storage"
 	"net/http"
 	"time"
 
@@ -21,8 +21,11 @@ func NewUserController(db *storage.Storage) *UserController {
 
 func (con *UserController) Register(c *gin.Context) {
 	var body struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Firstname   string `json:"first_name" binding:"required"`
+		Lastname    string `json:"last_name" binding:"required"`
+		Email       string `json:"email" binding:"required"`
+		Password    string `json:"password" binding:"required"`
+		DateOfBirth string `json:"date_of_birth" binding:"required"`
 	}
 
 	if err := c.ShouldBindJSON(&body); err != nil {

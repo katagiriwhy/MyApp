@@ -10,13 +10,40 @@ const RegisterForm = () => {
     const [birthDate, setBirthDate] = useState('');
     const [error, setError] = useState('');
 
+    const validatePassword = (password) => {
+        if (password.length < 8) {
+            return 'Пароль должен быть не менее 8 символов';
+        }
+        if (!/[A-Z]/.test(password)) {
+            return 'Добавьте хотя бы одну заглавную букву';
+        }
+        if (!/[0-9]/.test(password)) {
+            return 'Добавьте хотя бы одну цифру';
+        }
+        return '';
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPassword(value);
+        setError(validatePassword(value));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // const passwordError = validatePassword(password);
+        //
+        // if (passwordError) {
+        //     setError(passwordError);
+        //     return;
+        // }
+
         try {
             await register({ firstName, lastName, email, password, birthDate });
-            alert('Регистрация успешна! Теперь войдите.');
+            alert('Регистрация успешна!');
         } catch (err) {
-            setError('Ошибка регистрации');
+            setError('Ошибка регистрации: ' + err);
         }
     };
 
@@ -48,7 +75,7 @@ const RegisterForm = () => {
                 type="password"
                 placeholder="Пароль"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 required
             />
             <input
