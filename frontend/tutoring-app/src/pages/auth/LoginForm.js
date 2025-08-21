@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { login } from '../../api/auth';
+import {useAuthAPI} from "../../api/auth";
 import './AuthPage.css';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const {login} = useAuthAPI();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await login(email, password);
-            alert("Вход успешен!")
-            localStorage.setItem('token', response.token);
-            window.location.href = '/profile';
+            alert("Вход успешен!");
+            return response.value;
+            //localStorage.setItem('token', response.token);
+            //window.location.href = '/profile';
         } catch (err) {
             setError('Неверный email или пароль');
         }

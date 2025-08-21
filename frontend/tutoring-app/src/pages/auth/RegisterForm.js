@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { register } from '../../api/auth';
 import './AuthPage.css';
+import { useAuthAPI } from "../../api/auth";
 
 const RegisterForm = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [birthDate, setBirthDate] = useState('');
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        birth_date: ''
+    });
     const [error, setError] = useState('');
+    const { register } = useAuthAPI();
 
     const validatePassword = (password) => {
         if (password.length < 8) {
@@ -25,68 +28,76 @@ const RegisterForm = () => {
 
     const handlePasswordChange = (e) => {
         const value = e.target.value;
-        setPassword(value);
+        setFormData({...formData, password: value});
         setError(validatePassword(value));
     };
 
+    const handleChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.value});
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // const passwordError = validatePassword(password);
-        //
-        // if (passwordError) {
-        //     setError(passwordError);
-        //     return;
-        // }
-
+        setError("");
+        console.log('Отправляемые данные:', formData);
         try {
-            await register({ firstName, lastName, email, password, birthDate });
-            alert('Регистрация успешна!');
+            await register(formData);
         } catch (err) {
-            setError('Ошибка регистрации: ' + err);
+            console.error('Полная ошибка:', err);
+            setError('Ошибка регистрации: ' + err.message);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {error && <p className="error">{error}</p>}
-            <input
-                type="text"
-                placeholder="Имя"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-            />
-            <input
-                type="text"
-                placeholder="Фамилия"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Пароль"
-                value={password}
-                onChange={handlePasswordChange}
-                required
-            />
-            <input
-                type="date"
-                placeholder="Дата рождения"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                required
-            />
-            <button type="submit">Зарегистрироваться</button>
-        </form>
+        <div className="auth-container"> {}
+            <div className="auth-form"> {}
+                <h1>Регистрация</h1> {}
+                <form onSubmit={handleSubmit}>
+                    {error && <p className="error">{error}</p>}
+                    <input
+                        type="text"
+                        name="first_name"
+                        placeholder="Имя"
+                        value={formData.first_name}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="last_name"
+                        placeholder="Фамилия"
+                        value={formData.last_name}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Пароль"
+                        value={formData.password}
+                        onChange={handlePasswordChange}
+                        required
+                    />
+                    <input
+                        type="date"
+                        name="birth_date"
+                        placeholder="Дата рождения"
+                        value={formData.birth_date}
+                        onChange={handleChange}
+                        required
+                    />
+                    <button type="submit">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
     );
 };
 

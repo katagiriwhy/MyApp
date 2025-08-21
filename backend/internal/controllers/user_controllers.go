@@ -21,11 +21,11 @@ func NewUserController(db *storage.Storage) *UserController {
 
 func (con *UserController) Register(c *gin.Context) {
 	var body struct {
-		Firstname   string `json:"first_name" binding:"required"`
-		Lastname    string `json:"last_name" binding:"required"`
-		Email       string `json:"email" binding:"required"`
-		Password    string `json:"password" binding:"required"`
-		DateOfBirth string `json:"date_of_birth" binding:"required"`
+		FirstName string `json:"first_name" binding:"required"`
+		LastName  string `json:"last_name" binding:"required"`
+		Email     string `json:"email" binding:"required"`
+		Password  string `json:"password" binding:"required"`
+		BirthDate string `json:"birth_date" binding:"required"`
 	}
 
 	if err := c.ShouldBindJSON(&body); err != nil {
@@ -39,10 +39,19 @@ func (con *UserController) Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to generate password: " + err.Error()})
 		return
 	}
+	//TODO: parse time from json
+	date, err := time.Parse("2006-01-02", body.BirthDate)
 
-	user := models.User{Email: body.Email, PassHash: hash}
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse date: " + err.Error()})
+		return
+	}
 
-	token, err := jwt.NewToken(user, time.Minute*60)
+	user := models.User{Email: body.Email, PassHash: hash, FirstName: body.FirstName, LastName: body.LastName, BirthDate: date}
+
+	// TODO: finish token
+
+	_, err = jwt.NewToken(user, time.Minute*60)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create token: " + err.Error()})
@@ -58,7 +67,6 @@ func (con *UserController) Register(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"email": user.Email,
-		"token": token,
 	})
 }
 
@@ -79,7 +87,7 @@ func (con *UserController) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "User deleted successfully",
+		"message": "Пользователь: " + body.Email + " успешно удален",
 	})
 
 }
@@ -110,6 +118,6 @@ func (con *UserController) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Welcome" + user.Email,
+		"message": "Welcome " + user.Email,
 	})
 }

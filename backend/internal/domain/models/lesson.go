@@ -10,4 +10,5 @@ type Lesson struct {
 	EndTime   time.Time `json:"end_time"`
 	IsGroup   bool      `json:"is_group"`
 	Title     string    `json:"title"`
+	Price     uint16    `json:"price"`
 }

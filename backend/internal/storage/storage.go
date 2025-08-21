@@ -56,9 +56,9 @@ func (s *Storage) GetByID(ctx context.Context, id int) (*models.User, error) {
 }
 
 func (s *Storage) Create(ctx context.Context, user *models.User) error {
-	const query = "INSERT INTO users (first_name, last_name, email, password, date_of_birth) VALUES ($1, $2, $3, $4, $5)"
+	const query = "INSERT INTO users (first_name, last_name, email, password, birth_date) VALUES ($1, $2, $3, $4, $5) RETURNING id"
 
-	_, err := s.db.Exec(ctx, query, user.FirstName, user.LastName, user.Email, user.PassHash, user.BirthDate)
+	err := s.db.QueryRow(ctx, query, user.FirstName, user.LastName, user.Email, user.PassHash, user.BirthDate).Scan(&user.ID)
 
 	if err != nil {
 		return err
