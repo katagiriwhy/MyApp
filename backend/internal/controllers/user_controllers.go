@@ -39,7 +39,6 @@ func (con *UserController) Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to generate password: " + err.Error()})
 		return
 	}
-	//TODO: parse time from json
 	date, err := time.Parse("2006-01-02", body.BirthDate)
 
 	if err != nil {

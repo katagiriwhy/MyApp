@@ -11,35 +11,39 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await login(email, password);
+            await login(email, password);
             alert("Вход успешен!");
-            return response.value;
             //localStorage.setItem('token', response.token);
-            //window.location.href = '/profile';
         } catch (err) {
-            setError('Неверный email или пароль');
+            setError('Неверный email или пароль' + err);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {error && <p className="error">{error}</p>}
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Пароль"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <button type="submit">Войти</button>
-        </form>
+
+        <div className="auth-container">
+            <div className="auth-form">
+                <h1>Войти</h1>
+                <form onSubmit={handleSubmit}>
+                    {error && <p className="error">{error}</p>}
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Пароль"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button type="submit">Войти</button>
+                </form>
+            </div>
+        </div>
     );
 };
 

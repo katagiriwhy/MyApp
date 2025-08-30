@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: 'http://localhost:8080',
     timeout: 5000,
 });
 
@@ -12,9 +12,9 @@ export const useAuthAPI = () => {
      const login = async (email, password) => {
         try {
             const response = await api.post('/login', { email, password });
+            console.log(response.statusText)
             if (response.status >= 200 && response.status < 300) {
-                //navigate("/dashboard");
-                return response.data;
+                navigate("/");
             }
             throw new Error(response.data?.error || 'Login failed');
         } catch (err) {

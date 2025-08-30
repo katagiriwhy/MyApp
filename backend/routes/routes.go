@@ -23,12 +23,9 @@ func NewRoutes(con *controllers.UserController) *gin.Engine {
 	router := gin.Default()
 	router.Use(corsMiddleware())
 
-	api := router.Group("/api")
-	{
-		api.GET("/login", con.Login)
-		api.POST("/register", con.Register)
-		api.DELETE("/delete", con.Delete)
-	}
+	router.POST("/login", con.Login)
+	router.POST("/register", con.Register)
+	router.DELETE("/delete", con.Delete)
 
 	return router
 }
